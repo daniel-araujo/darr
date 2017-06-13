@@ -1,0 +1,13 @@
+# Autotools clutter.
+/Makefile.in
+/aclocal.m4
+/autom4te.cache/
+/compile
+/configure
+/depcomp
+/install-sh
+/missing
+/test-driver
+
+# Directory meant for developer builds.
+/build
