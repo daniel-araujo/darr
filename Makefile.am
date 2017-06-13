@@ -1,3 +1,4 @@
+EXTRA_DIST = README.md
 noinst_LIBRARIES =
 TESTS =
 check_PROGRAMS =
