@@ -110,33 +110,4 @@ inline void *darr_address(struct darr *d, size_t i)
 	return d->data + darr_data_index(d, i);
 }
 
-/*
- * Sets the value of an element.
- *
- * This function assumes that it can safely read the contents pointed to by the
- * address.
- *
- * The index must be a positive value less than the current size of the array.
- *
- * Passing an invalid index results in undefined behavior.
- */
-inline void darr_set(struct darr *d, size_t i, void *value)
-{
-	memcpy(darr_address(d, i), value, d->item_size);
-}
-
-/*
- * Copies the value of an element to the given address.
- *
- * This function assumes that it can safely dereference the given the address.
- *
- * The index must be a value smaller than the size.
- *
- * Passing an invalid index results in undefined behavior.
- */
-inline void darr_copy(struct darr *d, size_t i, void *value)
-{
-	memcpy(value, darr_address(d, i), d->item_size);
-}
-
 #endif /* DARR_DARR_H */
