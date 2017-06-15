@@ -1,9 +1,11 @@
 EXTRA_DIST = README.md
-noinst_LIBRARIES =
+include_HEADERS =
+lib_LIBRARIES =
 TESTS =
 check_PROGRAMS =
 
-noinst_LIBRARIES += libdarr.a
+include_HEADERS += src/darr.h
+lib_LIBRARIES += libdarr.a
 libdarr_a_SOURCES = \
 	src/darr.h \
 	src/darr.c
