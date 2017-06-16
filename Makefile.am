@@ -25,12 +25,7 @@ check_PROGRAMS += tests/resize-zero
 tests_resize_zero_SOURCES = src/tests/resize-zero.c
 tests_resize_zero_LDADD = libdarr.a
 
-TESTS += tests/set
-check_PROGRAMS += tests/set
-tests_set_SOURCES = src/tests/set.c
-tests_set_LDADD = libdarr.a
-
-TESTS += tests/copy
-check_PROGRAMS += tests/copy
-tests_copy_SOURCES = src/tests/copy.c
-tests_copy_LDADD = libdarr.a
+TESTS += tests/access-element
+check_PROGRAMS += tests/access-element
+tests_access_element_SOURCES = src/tests/access-element.c
+tests_access_element_LDADD = libdarr.a
