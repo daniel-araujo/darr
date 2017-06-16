@@ -4,6 +4,28 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef void *(*darr_realloc_t)(void *, size_t);
+typedef void (*darr_free_t)(void *);
+
+extern darr_realloc_t darr_realloc;
+extern darr_free_t darr_free;
+
+/*
+ * Allows you to override any call to realloc made by darr.
+ */
+inline void darr_global_set_realloc(darr_realloc_t f)
+{
+	darr_realloc = f;
+}
+
+/*
+ * Allows you to override any call to free made by darr.
+ */
+inline void darr_global_set_free(darr_free_t f)
+{
+	darr_free = f;
+}
+
 /*
  * The darr struct. You can initialize it by calling darr_init.
  */
@@ -47,7 +69,7 @@ inline void darr_init(struct darr *d, size_t item_size)
 inline void darr_deinit(struct darr *d)
 {
 	if (d->data) {
-		free(d->data);
+		darr_free(d->data);
 	}
 }
 
@@ -77,7 +99,7 @@ inline int darr_resize(struct darr *d, size_t size)
 
 	if (size == 0) {
 		if (d->data) {
-			free(d->data);
+			darr_free(d->data);
 			d->data = NULL;
 		}
 
@@ -85,7 +107,7 @@ inline int darr_resize(struct darr *d, size_t size)
 		return 1;
 	}
 
-	void *new = realloc(d->data, size);
+	void *new = darr_realloc(d->data, size * d->item_size);
 
 	if (new == NULL) {
 		return 0;

@@ -29,3 +29,13 @@ TESTS += tests/access-element
 check_PROGRAMS += tests/access-element
 tests_access_element_SOURCES = src/tests/access-element.c
 tests_access_element_LDADD = libdarr.a
+
+TESTS += tests/correct-element-size
+check_PROGRAMS += tests/correct-element-size
+tests_correct_element_size_SOURCES = src/tests/correct-element-size.c
+tests_correct_element_size_LDADD = libdarr.a
+
+TESTS += tests/correct-allocation-size
+check_PROGRAMS += tests/correct-allocation-size
+tests_correct_allocation_size_SOURCES = src/tests/correct-allocation-size.c
+tests_correct_allocation_size_LDADD = libdarr.a
