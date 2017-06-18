@@ -13,7 +13,9 @@ int main(void)
 	char *first = darr_address(&array, 0);
 	char *second = darr_address(&array, 1);
 
-	if ((second - first) != expected_size) {
+	size_t element_size = second - first;
+
+	if (element_size != expected_size) {
 		fprintf(stderr, "Incorrect element size.\n");
 		darr_deinit(&array);
 		return 1;

@@ -40,7 +40,7 @@ struct darr {
  *
  * Returns the index of an element.
  */
-inline size_t darr_data_index(struct darr *d, int i)
+inline size_t darr_data_index(struct darr *d, size_t i)
 {
 	return i * d->item_size;
 }
@@ -76,7 +76,7 @@ inline void darr_deinit(struct darr *d)
 /*
  * Returns the current size of the array.
  */
-inline int darr_size(struct darr *d)
+inline size_t darr_size(struct darr *d)
 {
 	return d->size;
 }
