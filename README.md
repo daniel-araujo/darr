@@ -52,7 +52,7 @@ It accepts the address of the struct as its first argument and the size of each
 element as its second argument.
 
 You're going to notice that functions that operate on the struct always accept
-its address as its first argument.
+its address as their first argument.
 
 Here's how to set the size:
 
