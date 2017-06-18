@@ -10,7 +10,11 @@ void darr_global_set_free(darr_free_t f);
 
 size_t darr_data_index(struct darr *d, size_t i);
 
+size_t darr_data_size(struct darr *d);
+
 void darr_init(struct darr *d, size_t item_size);
+
+int darr_copy(struct darr *d, struct darr *other);
 
 void darr_deinit(struct darr *d);
 

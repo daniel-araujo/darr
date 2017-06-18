@@ -46,6 +46,16 @@ inline size_t darr_data_index(struct darr *d, size_t i)
 }
 
 /*
+ * This is an implementation detail. Don't call this function.
+ *
+ * Returns the total size of allocated memory.
+ */
+inline size_t darr_data_size(struct darr *d)
+{
+	return d->size * d->item_size;
+}
+
+/*
  * Initializes a darr struct.
  *
  * You may only initialize the struct once.
@@ -57,6 +67,29 @@ inline void darr_init(struct darr *d, size_t item_size)
 	d->item_size = item_size;
 	d->size = 0;
 	d->data = NULL;
+}
+
+/*
+ * Creates a copy of an array.
+ *
+ * Returns 1 on success, 0 on failure.
+ *
+ * On failure none of the arrays are modified.
+ */
+inline int darr_copy(struct darr *d, struct darr *other)
+{
+	void *new = darr_realloc(NULL, darr_data_size(other));
+
+	if (new == NULL) {
+		return 0;
+	}
+
+	memcpy(new, other->data, darr_data_size(other));
+
+	d->item_size = other->item_size;
+	d->size = other->size;
+	d->data = new;
+	return 1;
 }
 
 /*

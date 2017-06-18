@@ -39,3 +39,18 @@ TESTS += tests/correct-allocation-size
 check_PROGRAMS += tests/correct-allocation-size
 tests_correct_allocation_size_SOURCES = src/tests/correct-allocation-size.c
 tests_correct_allocation_size_LDADD = libdarr.a
+
+TESTS += tests/copy
+check_PROGRAMS += tests/copy
+tests_copy_SOURCES = src/tests/copy.c
+tests_copy_LDADD = libdarr.a
+
+TESTS += tests/copy-modify
+check_PROGRAMS += tests/copy-modify
+tests_copy_modify_SOURCES = src/tests/copy-modify.c
+tests_copy_modify_LDADD = libdarr.a
+
+TESTS += tests/copy-resize
+check_PROGRAMS += tests/copy-resize
+tests_copy_resize_SOURCES = src/tests/copy-resize.c
+tests_copy_resize_LDADD = libdarr.a
