@@ -73,8 +73,15 @@ the resources that are bound to it.
 darr_deinit(&my_dynamic_array);
 ```
 
+You may also be interested in making copies of arrays. You can do so by calling
+darr_copy. The first argument must be an array that has not been initialized.
+
+```C
+darr_copy(&copy_array, &source_array);
+```
+
 Read the comments in the `darr.h` header file for detailed descriptions of
-these functions.
+these functions and others.
 
 
 ## 3. Examples
