@@ -15,9 +15,14 @@ A resizable array for the C language.
 ## 1. Introduction
 
 Darr is a C library that abstracts most of the arithmetic that is done when
-attempting to create an array of variable size with malloc and realloc. The
-motivation for creating this tiny library is to stop writing repetitive memory
-allocation code.
+attempting to create an array of variable size with malloc, realloc and free.
+The motivation for creating this tiny library is to stop having to write
+repetitive memory allocation code.
+
+The functions in this library assume that they're always going to be used
+correctly so that they can avoid having to validate their input. For instance,
+no bounds checking is done and the size for the array is expected to always be
+a positive number.
 
 
 ## 2. How to use
@@ -31,7 +36,7 @@ In your code you're going to need to include the `darr.h` header file.
 #include <darr.h>
 ```
 
-Now you can declare variables of type `struct darr`.
+Then you can declare variables of type `struct darr`.
 
 ```C
 struct darr my_dynamic_array;
@@ -42,31 +47,51 @@ its data members directly. You're going to call functions that operate on it,
 instead.
 
 The first thing you will always want to do is to initialize the struct. That's
-what the function darr_init is for.
+what the function `darr_init` is for. It accepts the address of the struct as
+its first argument and the size of each element as its second argument.
 
 ```C
 darr_init(&my_dynamic_array, sizeof(int));
 ```
 
-It accepts the address of the struct as its first argument and the size of each
-element as its second argument.
-
-You're going to notice that functions that operate on the struct always accept
-its address as their first argument.
-
-Here's how to set the size:
+This initializes an empty array that will store values that can hold an
+`int`. To set the size you need to call `darr_resize`. It takes the address of
+the struct as its first argument and the number of elements as its second
+argument. It will return 0 on failure, 1 on success.
 
 ```C
-darr_resize(&my_dynamic_array, new_size);
+int result = darr_resize(&my_dynamic_array, new_size);
 ```
 
-Getting the address of an element:
+You have probably noticed a pattern by now. Functions that operate on the
+struct always accept its address as their first argument. I will stop pointing
+that out from now on.
+
+The only way to access the elements of the array is to ask for their addresses.
+To do that, you need to call `darr_address`. This takes the index of the
+element.
 
 ```C
-darr_address(&my_dynamic_array, index);
+int *element = darr_address(&my_dynamic_array, index);
 ```
 
-When you are done using the array you should call darr_deinit to release all
+With the address you can pretty much do anything you would be able to do with a
+pointer in C.
+
+```C
+// Assignment using pointer syntax.
+*element = 1;
+
+// Assignment using array syntax.
+element[0] = 1;
+```
+
+The elements are guaranteed to be stored in sequence.
+
+But be wary that the address must no longer be used after calling
+`darr_resize`, you would need to call `darr_address` again.
+
+When you are done using the array you should call `darr_deinit` to release all
 the resources that are bound to it.
 
 ```C
@@ -74,11 +99,15 @@ darr_deinit(&my_dynamic_array);
 ```
 
 You may also be interested in making copies of arrays. You can do so by calling
-darr_copy. The first argument must be an array that has not been initialized.
+`darr_copy`. The first argument must be an array that has not been initialized,
+the second argument is the array you want to copy.
 
 ```C
 darr_copy(&copy_array, &source_array);
 ```
+
+You can then treat the copy like any other array, which includes having
+to deinitialize it.
 
 Read the comments in the `darr.h` header file for detailed descriptions of
 these functions and others.
