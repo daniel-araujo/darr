@@ -152,7 +152,11 @@ inline int darr_resize(struct darr *d, size_t size)
 }
 
 /*
- * Returns the address of an element.
+ * Returns the address of an element by its index.
+ *
+ * The first element is at index 0 and the last element is at size minus one.
+ * You may also request the address of the end of the array by passing size as
+ * the index but you cannot dereference it.
  *
  * The address is valid until either one of these events occur:
  * - a successful resize is made.
@@ -163,6 +167,34 @@ inline int darr_resize(struct darr *d, size_t size)
 inline void *darr_address(struct darr *d, size_t i)
 {
 	return d->data + darr_data_index(d, i);
+}
+
+/*
+ * Returns the address pointing to the first element in the array.
+ *
+ * If the array is empty, the returned address shall not be dereferenced.
+ *
+ * The restrictions for the addresses returned by darr_address apply.
+ *
+ * The purpose of this function is to implement the iterator pattern from C++
+ */
+inline void *darr_begin(struct darr *d)
+{
+	return darr_address(d, 0);
+}
+
+/*
+ * Returns the address pointing past the end of the elements in the array.
+ *
+ * If the array is empty, the function returns the same as darr_begin.
+ *
+ * The restrictions for the addresses returned by darr_address apply.
+ *
+ * The purpose of this function is to implement the iterator pattern from C++
+ */
+inline void *darr_end(struct darr *d)
+{
+	return darr_address(d, darr_size(d));
 }
 
 #endif /* DARR_DARR_H */

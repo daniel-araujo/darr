@@ -23,3 +23,7 @@ size_t darr_size(struct darr *d);
 int darr_resize(struct darr *d, size_t size);
 
 void *darr_address(struct darr *d, size_t i);
+
+void *darr_begin(struct darr *d);
+
+void *darr_end(struct darr *d);

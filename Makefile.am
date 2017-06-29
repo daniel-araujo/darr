@@ -54,3 +54,8 @@ TESTS += tests/copy-resize
 check_PROGRAMS += tests/copy-resize
 tests_copy_resize_SOURCES = src/tests/copy-resize.c
 tests_copy_resize_LDADD = libdarr.a
+
+TESTS += tests/begin-end
+check_PROGRAMS += tests/begin-end
+tests_begin_end_SOURCES = src/tests/begin-end.c
+tests_begin_end_LDADD = libdarr.a
