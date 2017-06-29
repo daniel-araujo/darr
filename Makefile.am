@@ -59,3 +59,8 @@ TESTS += tests/begin-end
 check_PROGRAMS += tests/begin-end
 tests_begin_end_SOURCES = src/tests/begin-end.c
 tests_begin_end_LDADD = libdarr.a
+
+TESTS += tests/swap
+check_PROGRAMS += tests/swap
+tests_swap_SOURCES = src/tests/swap.c
+tests_swap_LDADD = libdarr.a

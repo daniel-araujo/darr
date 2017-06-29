@@ -27,3 +27,5 @@ void *darr_address(struct darr *d, size_t i);
 void *darr_begin(struct darr *d);
 
 void *darr_end(struct darr *d);
+
+void darr_swap(struct darr *d, struct darr *other);

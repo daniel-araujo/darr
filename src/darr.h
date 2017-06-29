@@ -197,4 +197,19 @@ inline void *darr_end(struct darr *d)
 	return darr_address(d, darr_size(d));
 }
 
+/*
+ * Swaps the elements of the array with another.
+ *
+ * The arrays must have elements of the same size but the number of elements
+ * may differ.
+ */
+inline void darr_swap(struct darr *d, struct darr *other)
+{
+	struct darr tmp;
+
+	tmp = *d;
+	*d = *other;
+	*other = tmp;
+}
+
 #endif /* DARR_DARR_H */
