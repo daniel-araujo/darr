@@ -14,7 +14,13 @@ int main(void)
 	*first1 = original_value;
 
 	struct darr array2;
-	darr_copy(&array2, &array1);
+	
+	if (!darr_copy(&array2, &array1)) {
+		fprintf(stderr, "Failed to create copy.\n");
+		darr_deinit(&array1);
+		return 1;
+	}
+
 	int *first2 = darr_address(&array2, 0);
 	*first2 = copy_value;
 

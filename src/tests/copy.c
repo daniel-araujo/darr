@@ -13,7 +13,13 @@ int main(void)
 	*first1 = expected_value;
 
 	struct darr array2;
-	darr_copy(&array2, &array1);
+	
+	if (!darr_copy(&array2, &array1)) {
+		fprintf(stderr, "Failed to create copy.\n");
+		darr_deinit(&array1);
+		return 1;
+	}
+
 	int *first2 = darr_address(&array2, 0);
 
 	if (darr_size(&array1) != darr_size(&array2)) {
