@@ -20,6 +20,8 @@ void darr_deinit(struct darr *d);
 
 size_t darr_size(struct darr *d);
 
+void *darr_data(struct darr *d);
+
 int darr_resize(struct darr *d, size_t size);
 
 void *darr_address(struct darr *d, size_t i);

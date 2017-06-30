@@ -115,6 +115,18 @@ inline size_t darr_size(struct darr *d)
 }
 
 /*
+ * Returns a pointer to the start of the array.
+ *
+ * This is equivalent to calling darr_address with index 0.
+ *
+ * The restrictions for the addresses returned by darr_address apply.
+ */
+inline void *darr_data(struct darr *d)
+{
+	return d->data;
+}
+
+/*
  * Changes the size of the array.
  *
  * Returns 1 on success, 0 on failure.
