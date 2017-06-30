@@ -64,3 +64,8 @@ TESTS += tests/swap
 check_PROGRAMS += tests/swap
 tests_swap_SOURCES = src/tests/swap.c
 tests_swap_LDADD = libdarr.a
+
+TESTS += tests/empty
+check_PROGRAMS += tests/empty
+tests_empty_SOURCES = src/tests/empty.c
+tests_empty_LDADD = libdarr.a

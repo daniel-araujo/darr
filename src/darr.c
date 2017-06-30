@@ -31,3 +31,5 @@ void *darr_begin(struct darr *d);
 void *darr_end(struct darr *d);
 
 void darr_swap(struct darr *d, struct darr *other);
+
+int darr_empty(struct darr *d);

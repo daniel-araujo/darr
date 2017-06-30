@@ -224,4 +224,12 @@ inline void darr_swap(struct darr *d, struct darr *other)
 	*other = tmp;
 }
 
+/*
+ * Returns 1 if the array is empty otherwise it returns 0.
+ */
+inline int darr_empty(struct darr *d)
+{
+	return d->size == 0;
+}
+
 #endif /* DARR_DARR_H */
