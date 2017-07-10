@@ -13,7 +13,7 @@ static void *override_realloc(void *p, size_t size)
 
 int main(void)
 {
-	darr_global_set_realloc(&override_realloc);
+	darr_global_realloc_set(&override_realloc);
 
 	size_t expected_size = sizeof(int);
 

@@ -39,8 +39,8 @@ int main(void)
 	int value1 = 0x55667788;
 	int value2 = 0x11223344;
 
-	darr_global_set_realloc(margin_realloc);
-	darr_global_set_free(margin_free);
+	darr_global_realloc_set(margin_realloc);
+	darr_global_free_set(margin_free);
 
 	struct darr array;
 	darr_init(&array, sizeof(int));

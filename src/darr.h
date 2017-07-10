@@ -13,7 +13,7 @@ extern darr_free_t darr_free;
 /*
  * Allows you to override any call to realloc made by darr.
  */
-inline void darr_global_set_realloc(darr_realloc_t f)
+inline void darr_global_realloc_set(darr_realloc_t f)
 {
 	darr_realloc = f;
 }
@@ -21,7 +21,7 @@ inline void darr_global_set_realloc(darr_realloc_t f)
 /*
  * Allows you to override any call to free made by darr.
  */
-inline void darr_global_set_free(darr_free_t f)
+inline void darr_global_free_set(darr_free_t f)
 {
 	darr_free = f;
 }

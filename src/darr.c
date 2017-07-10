@@ -4,9 +4,9 @@ darr_realloc_t darr_realloc = realloc;
 
 darr_free_t darr_free = free;
 
-void darr_global_set_realloc(darr_realloc_t f);
+void darr_global_realloc_set(darr_realloc_t f);
 
-void darr_global_set_free(darr_free_t f);
+void darr_global_free_set(darr_free_t f);
 
 size_t darr_data_index(struct darr *d, size_t i);
 
