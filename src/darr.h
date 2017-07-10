@@ -232,4 +232,34 @@ inline int darr_empty(struct darr *d)
 	return d->size == 0;
 }
 
+/*
+ * Moves a specified number of elements to the left, discarding the ones that
+ * would have been moved out of bounds.
+ *
+ * Steps may not be greater than the size of the array otherwise behavior is
+ * undefined.
+ */
+inline void darr_shift_left(struct darr *d, size_t steps)
+{
+	size_t offset = darr_data_index(d, steps);
+	size_t size = darr_data_size(d);
+
+	memmove(d->data, d->data + offset, size - offset);
+}
+
+/*
+ * Moves a specified number of elements to the right, discarding the ones that
+ * would have been moved out of bounds.
+ *
+ * Steps may not be greater than the size of the array otherwise behavior is
+ * undefined.
+ */
+inline void darr_shift_right(struct darr *d, size_t steps)
+{
+	size_t offset = darr_data_index(d, steps);
+	size_t size = darr_data_size(d);
+
+	memmove(d->data + offset, d->data, size - offset);
+}
+
 #endif /* DARR_DARR_H */

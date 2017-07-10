@@ -69,3 +69,8 @@ TESTS += tests/empty
 check_PROGRAMS += tests/empty
 tests_empty_SOURCES = src/tests/empty.c
 tests_empty_LDADD = libdarr.a
+
+TESTS += tests/shift
+check_PROGRAMS += tests/shift
+tests_shift_SOURCES = src/tests/shift.c
+tests_shift_LDADD = libdarr.a

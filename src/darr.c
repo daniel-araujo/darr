@@ -33,3 +33,7 @@ void *darr_end(struct darr *d);
 void darr_swap(struct darr *d, struct darr *other);
 
 int darr_empty(struct darr *d);
+
+void darr_shift_left(struct darr *d, size_t steps);
+
+void darr_shift_right(struct darr *d, size_t steps);
