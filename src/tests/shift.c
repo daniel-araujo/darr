@@ -11,7 +11,7 @@ int main(void)
 	darr_init(&array, sizeof(int));
 	darr_resize(&array, 4);
 
-	int *element = darr_address(&array, 0);
+	int *element = darr_element(&array, 0);
 
 	element[0] = value1;
 	element[1] = value2;

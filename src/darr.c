@@ -12,7 +12,7 @@ size_t darr_data_index(struct darr *d, size_t i);
 
 size_t darr_data_size(struct darr *d);
 
-void darr_init(struct darr *d, size_t item_size);
+void darr_init(struct darr *d, size_t element_size);
 
 int darr_copy(struct darr *d, struct darr *other);
 
@@ -24,7 +24,7 @@ void *darr_data(struct darr *d);
 
 int darr_resize(struct darr *d, size_t size);
 
-void *darr_address(struct darr *d, size_t i);
+void *darr_element(struct darr *d, size_t i);
 
 void *darr_begin(struct darr *d);
 
@@ -41,3 +41,5 @@ void darr_shift_right(struct darr *d, size_t steps);
 int darr_shrink(struct darr *d, size_t size);
 
 int darr_grow(struct darr *d, size_t size);
+
+void *darr_address(struct darr *d, size_t i);

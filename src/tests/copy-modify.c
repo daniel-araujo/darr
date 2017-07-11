@@ -10,7 +10,7 @@ int main(void)
 	struct darr array1;
 	darr_init(&array1, sizeof(int));
 	darr_resize(&array1, 1);
-	int *first1 = darr_address(&array1, 0);
+	int *first1 = darr_element(&array1, 0);
 	*first1 = original_value;
 
 	struct darr array2;
@@ -21,7 +21,7 @@ int main(void)
 		return 1;
 	}
 
-	int *first2 = darr_address(&array2, 0);
+	int *first2 = darr_element(&array2, 0);
 	*first2 = copy_value;
 
 	if (*first1 != original_value) {

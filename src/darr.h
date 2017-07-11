@@ -30,7 +30,7 @@ inline void darr_global_free_set(darr_free_t f)
  * The darr struct. You can initialize it by calling darr_init.
  */
 struct darr {
-	size_t item_size;
+	size_t element_size;
 	size_t size;
 	char *data;
 };
@@ -42,7 +42,7 @@ struct darr {
  */
 inline size_t darr_data_index(struct darr *d, size_t i)
 {
-	return i * d->item_size;
+	return i * d->element_size;
 }
 
 /*
@@ -52,7 +52,7 @@ inline size_t darr_data_index(struct darr *d, size_t i)
  */
 inline size_t darr_data_size(struct darr *d)
 {
-	return d->size * d->item_size;
+	return d->size * d->element_size;
 }
 
 /*
@@ -62,9 +62,9 @@ inline size_t darr_data_size(struct darr *d)
  *
  * Call darr_deinit to deinitialize.
  */
-inline void darr_init(struct darr *d, size_t item_size)
+inline void darr_init(struct darr *d, size_t element_size)
 {
-	d->item_size = item_size;
+	d->element_size = element_size;
 	d->size = 0;
 	d->data = NULL;
 }
@@ -86,7 +86,7 @@ inline int darr_copy(struct darr *d, struct darr *other)
 
 	memcpy(new, other->data, darr_data_size(other));
 
-	d->item_size = other->item_size;
+	d->element_size = other->element_size;
 	d->size = other->size;
 	d->data = new;
 	return 1;
@@ -117,9 +117,9 @@ inline size_t darr_size(struct darr *d)
 /*
  * Returns a pointer to the start of the array.
  *
- * This is equivalent to calling darr_address with index 0.
+ * This is equivalent to calling darr_element with index 0.
  *
- * The restrictions for the addresses returned by darr_address apply.
+ * The restrictions for the addresses returned by darr_element apply.
  */
 inline void *darr_data(struct darr *d)
 {
@@ -152,7 +152,7 @@ inline int darr_resize(struct darr *d, size_t size)
 		return 1;
 	}
 
-	void *new = darr_realloc(d->data, size * d->item_size);
+	void *new = darr_realloc(d->data, size * d->element_size);
 
 	if (new == NULL) {
 		return 0;
@@ -164,11 +164,9 @@ inline int darr_resize(struct darr *d, size_t size)
 }
 
 /*
- * Returns the address of an element by its index.
+ * Returns the address of an element by index.
  *
  * The first element is at index 0 and the last element is at size minus one.
- * You may also request the address of the end of the array by passing size as
- * the index but you cannot dereference it.
  *
  * The address is valid until either one of these events occur:
  * - a successful resize is made.
@@ -176,7 +174,7 @@ inline int darr_resize(struct darr *d, size_t size)
  *
  * Dereferencing an invalid address results in undefined behavior.
  */
-inline void *darr_address(struct darr *d, size_t i)
+inline void *darr_element(struct darr *d, size_t i)
 {
 	return d->data + darr_data_index(d, i);
 }
@@ -186,13 +184,13 @@ inline void *darr_address(struct darr *d, size_t i)
  *
  * If the array is empty, the returned address shall not be dereferenced.
  *
- * The restrictions for the addresses returned by darr_address apply.
+ * The restrictions for the addresses returned by darr_element apply.
  *
  * The purpose of this function is to implement the iterator pattern from C++
  */
 inline void *darr_begin(struct darr *d)
 {
-	return darr_address(d, 0);
+	return darr_element(d, 0);
 }
 
 /*
@@ -200,13 +198,14 @@ inline void *darr_begin(struct darr *d)
  *
  * If the array is empty, the function returns the same as darr_begin.
  *
- * The restrictions for the addresses returned by darr_address apply.
+ * The restrictions for the addresses returned by darr_element also apply to
+ * this address.
  *
  * The purpose of this function is to implement the iterator pattern from C++
  */
 inline void *darr_end(struct darr *d)
 {
-	return darr_address(d, darr_size(d));
+	return darr_element(d, darr_size(d));
 }
 
 /*
@@ -287,6 +286,20 @@ inline int darr_shrink(struct darr *d, size_t size)
 inline int darr_grow(struct darr *d, size_t size)
 {
 	return darr_resize(d, darr_size(d) + size);
+}
+
+/*
+ * This function is deprecated, use darr_element instead.
+ *
+ * Additionally to doing everything that darr_element does, it guarantees that
+ * it will return the same address as darr_end if it is passed the size of the
+ * array as the index.
+ *
+ * This will be removed in version 2.
+ */
+inline void *darr_address(struct darr *d, size_t i)
+{
+	return darr_element(d, i);
 }
 
 #endif /* DARR_DARR_H */

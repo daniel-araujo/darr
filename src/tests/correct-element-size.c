@@ -10,8 +10,8 @@ int main(void)
 
 	size_t expected_size = sizeof(int);
 
-	char *first = darr_address(&array, 0);
-	char *second = darr_address(&array, 1);
+	char *first = darr_element(&array, 0);
+	char *second = darr_element(&array, 1);
 
 	size_t element_size = second - first;
 

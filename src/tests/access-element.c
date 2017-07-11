@@ -10,7 +10,7 @@ int main(void)
 	struct darr array;
 	darr_init(&array, sizeof(int));
 	darr_resize(&array, 1);
-	whats_there = darr_address(&array, 0);
+	whats_there = darr_element(&array, 0);
 	*whats_there = expected_value;
 
 	if (*whats_there != expected_value) {

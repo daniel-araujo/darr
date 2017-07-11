@@ -9,7 +9,7 @@ int main(void)
 	struct darr array1;
 	darr_init(&array1, sizeof(int));
 	darr_resize(&array1, 1);
-	int *first1 = darr_address(&array1, 0);
+	int *first1 = darr_element(&array1, 0);
 	*first1 = expected_value;
 
 	struct darr array2;
@@ -20,7 +20,7 @@ int main(void)
 		return 1;
 	}
 
-	int *first2 = darr_address(&array2, 0);
+	int *first2 = darr_element(&array2, 0);
 
 	if (darr_size(&array1) != darr_size(&array2)) {
 		fprintf(stderr, "The copy has a different size.\n");

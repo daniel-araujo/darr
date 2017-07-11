@@ -8,8 +8,8 @@ int main(void)
 	darr_init(&array, sizeof(int));
 	darr_resize(&array, 1);
 
-	int *begin = darr_address(&array, 0);
-	int *end = darr_address(&array, 1);
+	int *begin = darr_element(&array, 0);
+	int *end = darr_element(&array, 1);
 
 	if (darr_begin(&array) != begin) {
 		fprintf(stderr, "darr_begin is not pointing to the first element.\n");
