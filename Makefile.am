@@ -79,3 +79,8 @@ TESTS += tests/shift-boundary
 check_PROGRAMS += tests/shift-boundary
 tests_shift_boundary_SOURCES = src/tests/shift-boundary.c
 tests_shift_boundary_LDADD = libdarr.a
+
+TESTS += tests/shrink-grow
+check_PROGRAMS += tests/shrink-grow
+tests_shrink_grow_SOURCES = src/tests/shrink-grow.c
+tests_shrink_grow_LDADD = libdarr.a

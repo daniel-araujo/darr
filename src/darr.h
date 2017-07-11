@@ -262,4 +262,31 @@ inline void darr_shift_right(struct darr *d, size_t steps)
 	memmove(d->data + offset, d->data, size - offset);
 }
 
+/*
+ * Decreases the size of the array by a given amount.
+ *
+ * Returns 1 on success, 0 on failure.
+ *
+ * On failure the size and the contents of the array remain untouched.
+ *
+ * Behavior is undefined if the given amount is less than the size of the
+ * array.
+ */
+inline int darr_shrink(struct darr *d, size_t size)
+{
+	return darr_resize(d, darr_size(d) - size);
+}
+
+/*
+ * Increases the size of the array by a given amount.
+ *
+ * Returns 1 on success, 0 on failure.
+ *
+ * On failure the size and the contents of the array remain untouched.
+ */
+inline int darr_grow(struct darr *d, size_t size)
+{
+	return darr_resize(d, darr_size(d) + size);
+}
+
 #endif /* DARR_DARR_H */
