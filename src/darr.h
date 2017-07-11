@@ -38,7 +38,8 @@ struct darr {
 /*
  * This is an implementation detail. Don't call this function.
  *
- * Returns the index of an element.
+ * Translates an index provided by the user to an index that can be used to
+ * access an element.
  */
 inline size_t darr_data_index(struct darr *d, size_t i)
 {
@@ -58,7 +59,7 @@ inline size_t darr_data_size(struct darr *d)
 /*
  * Initializes a darr struct.
  *
- * You may only initialize the struct once.
+ * You may not pass a struct that has already been initialized.
  *
  * Call darr_deinit to deinitialize.
  */
@@ -70,11 +71,13 @@ inline void darr_init(struct darr *d, size_t element_size)
 }
 
 /*
- * Creates a copy of an array.
+ * Initializes a darr struct that will be a copy of another one.
  *
  * Returns 1 on success, 0 on failure.
  *
- * On failure none of the arrays are modified.
+ * On failure, the darr struct is not initialized.
+ *
+ * Call darr_deinit to deinitialize.
  */
 inline int darr_copy(struct darr *d, struct darr *other)
 {
@@ -95,9 +98,8 @@ inline int darr_copy(struct darr *d, struct darr *other)
 /*
  * Deinitializes a darr struct.
  *
- * The struct must have been previously passed to a call to darr_init.
- *
- * You may only deinitialize as many times as you have initialized.
+ * The struct must have been previously initialized with either darr_init or
+ * darr_copy. You may not pass a struct that has isn't initialized.
  */
 inline void darr_deinit(struct darr *d)
 {
@@ -119,7 +121,7 @@ inline size_t darr_size(struct darr *d)
  *
  * This is equivalent to calling darr_element with index 0.
  *
- * The restrictions for the addresses returned by darr_element apply.
+ * The restrictions for the pointers returned by darr_element apply.
  */
 inline void *darr_data(struct darr *d)
 {
@@ -164,15 +166,17 @@ inline int darr_resize(struct darr *d, size_t size)
 }
 
 /*
- * Returns the address of an element by index.
+ * Returns a pointer to an element by index.
  *
  * The first element is at index 0 and the last element is at size minus one.
  *
- * The address is valid until either one of these events occur:
+ * The pointer is valid until either one of these events occur:
  * - a successful resize is made.
  * - the array is deinitialized.
  *
- * Dereferencing an invalid address results in undefined behavior.
+ * If the array is empty, the returned pointer is invalid.
+ *
+ * Dereferencing an invalid pointer results in undefined behavior.
  */
 inline void *darr_element(struct darr *d, size_t i)
 {
@@ -180,11 +184,12 @@ inline void *darr_element(struct darr *d, size_t i)
 }
 
 /*
- * Returns the address pointing to the first element in the array.
+ * Returns a pointer to the start of the array, which is also a pointer to the
+ * first element.
  *
- * If the array is empty, the returned address shall not be dereferenced.
+ * If the array is empty, the returned pointer shall not be dereferenced.
  *
- * The restrictions for the addresses returned by darr_element apply.
+ * The restrictions for the pointers returned by darr_element apply.
  *
  * The purpose of this function is to implement the iterator pattern from C++
  */
@@ -194,14 +199,13 @@ inline void *darr_begin(struct darr *d)
 }
 
 /*
- * Returns the address pointing past the end of the elements in the array.
+ * Returns a pointer past the end of the array.
  *
  * If the array is empty, the function returns the same as darr_begin.
  *
- * The restrictions for the addresses returned by darr_element also apply to
- * this address.
+ * The restrictions for the pointers returned by darr_element also apply.
  *
- * The purpose of this function is to implement the iterator pattern from C++
+ * The purpose of this function is to implement the iterator pattern from C++.
  */
 inline void *darr_end(struct darr *d)
 {
