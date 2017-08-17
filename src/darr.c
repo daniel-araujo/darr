@@ -43,3 +43,7 @@ int darr_shrink(struct darr *d, size_t size);
 int darr_grow(struct darr *d, size_t size);
 
 void *darr_address(struct darr *d, size_t i);
+
+void *darr_first(struct darr *d);
+
+void *darr_last(struct darr *d);

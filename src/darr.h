@@ -306,4 +306,28 @@ inline void *darr_address(struct darr *d, size_t i)
 	return darr_element(d, i);
 }
 
+/*
+ * Returns a pointer to the first element of the array.
+ *
+ * The behavior of this function is undefined if the array is empty.
+ *
+ * The restrictions for the pointers returned by darr_element apply.
+ */
+inline void *darr_first(struct darr *d)
+{
+	return darr_element(d, 0);
+}
+
+/*
+ * Returns a pointer to the last element of the array.
+ *
+ * The behavior of this function is undefined if the array is empty.
+ *
+ * The restrictions for the pointers returned by darr_element apply.
+ */
+inline void *darr_last(struct darr *d)
+{
+	return darr_element(d, darr_size(d) - 1);
+}
+
 #endif /* DARR_DARR_H */

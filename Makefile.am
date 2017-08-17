@@ -84,3 +84,8 @@ TESTS += tests/shrink-grow
 check_PROGRAMS += tests/shrink-grow
 tests_shrink_grow_SOURCES = src/tests/shrink-grow.c
 tests_shrink_grow_LDADD = libdarr.a
+
+TESTS += tests/first-last
+check_PROGRAMS += tests/first-last
+tests_first_last_SOURCES = src/tests/first-last.c
+tests_first_last_LDADD = libdarr.a
