@@ -171,7 +171,7 @@ inline int darr_resize(struct darr *d, size_t size)
  * The first element is at index 0 and the last element is at size minus one.
  *
  * The pointer is valid until either one of these events occur:
- * - a successful resize is made.
+ * - size changes.
  * - the array is deinitialized.
  *
  * If the array is empty, the returned pointer is invalid.
@@ -328,6 +328,52 @@ inline void *darr_first(struct darr *d)
 inline void *darr_last(struct darr *d)
 {
 	return darr_element(d, darr_size(d) - 1);
+}
+
+/*
+ * Copies the elements of another array to the end of the array.
+ *
+ * Both arrays must have elements of the same size otherwise behavior is
+ * undefined.
+ *
+ * Returns 1 on success, 0 on failure.
+ *
+ * On failure the size and the contents of the array remain untouched.
+ */
+inline int darr_append(struct darr *d, struct darr *other)
+{
+	size_t offset = darr_size(d);
+
+	if (!darr_grow(d, darr_size(other))) {
+		return 0;
+	}
+
+	memcpy(darr_element(d, offset), other->data, darr_data_size(other));
+
+	return 1;
+}
+
+/*
+ * Copies the elements of another array to the start of the array.
+ *
+ * Both arrays must have elements of the same size otherwise behavior is
+ * undefined.
+ *
+ * Returns 1 on success, 0 on failure.
+ *
+ * On failure the size and the contents of the array remain untouched.
+ */
+inline int darr_prepend(struct darr *d, struct darr *other)
+{
+	if (!darr_grow(d, darr_size(other))) {
+		return 0;
+	}
+
+	darr_shift_right(d, darr_size(other));
+
+	memcpy(d->data, other->data, darr_data_size(other));
+
+	return 1;
 }
 
 #endif /* DARR_DARR_H */

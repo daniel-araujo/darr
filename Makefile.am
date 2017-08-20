@@ -89,3 +89,13 @@ TESTS += tests/first-last
 check_PROGRAMS += tests/first-last
 tests_first_last_SOURCES = src/tests/first-last.c
 tests_first_last_LDADD = libdarr.a
+
+TESTS += tests/append
+check_PROGRAMS += tests/append
+tests_append_SOURCES = src/tests/append.c
+tests_append_LDADD = libdarr.a
+
+TESTS += tests/prepend
+check_PROGRAMS += tests/prepend
+tests_prepend_SOURCES = src/tests/prepend.c
+tests_prepend_LDADD = libdarr.a

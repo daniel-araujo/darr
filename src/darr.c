@@ -47,3 +47,7 @@ void *darr_address(struct darr *d, size_t i);
 void *darr_first(struct darr *d);
 
 void *darr_last(struct darr *d);
+
+int darr_append(struct darr *d, struct darr *other);
+
+int darr_prepend(struct darr *d, struct darr *other);
