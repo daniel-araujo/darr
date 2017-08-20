@@ -99,7 +99,7 @@ inline int darr_copy(struct darr *d, struct darr *other)
  * Deinitializes a darr struct.
  *
  * The struct must have been previously initialized with either darr_init or
- * darr_copy. You may not pass a struct that has isn't initialized.
+ * darr_copy. You may not pass a struct that has not been initialized.
  */
 inline void darr_deinit(struct darr *d)
 {
