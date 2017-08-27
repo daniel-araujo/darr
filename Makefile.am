@@ -75,6 +75,11 @@ check_PROGRAMS += tests/shift
 tests_shift_SOURCES = src/tests/shift.c
 tests_shift_LDADD = libdarr.a
 
+TESTS += tests/shift-slice
+check_PROGRAMS += tests/shift-slice
+tests_shift_slice_SOURCES = src/tests/shift-slice.c
+tests_shift_slice_LDADD = libdarr.a
+
 TESTS += tests/shift-boundary
 check_PROGRAMS += tests/shift-boundary
 tests_shift_boundary_SOURCES = src/tests/shift-boundary.c

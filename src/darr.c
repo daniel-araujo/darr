@@ -36,7 +36,19 @@ int darr_empty(struct darr *d);
 
 void darr_shift_left(struct darr *d, size_t steps);
 
+void darr_shift_slice_left(
+	struct darr *d,
+	size_t steps,
+	size_t start,
+	size_t size);
+
 void darr_shift_right(struct darr *d, size_t steps);
+
+void darr_shift_slice_right(
+	struct darr *d,
+	size_t steps,
+	size_t start,
+	size_t size);
 
 int darr_shrink(struct darr *d, size_t size);
 

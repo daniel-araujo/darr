@@ -251,6 +251,36 @@ inline void darr_shift_left(struct darr *d, size_t steps)
 }
 
 /*
+ * Moves a range of elements to the left, discarding the ones that would have
+ * been moved out of the boundaries of the slice.
+ *
+ * The start parameter must be an index into the array that denotes where the
+ * slice starts.
+ *
+ * The size parameter must be a positive number that does not exceed the size
+ * of the array counting from the given index that denotes the size of the
+ * slice.
+ *
+ * The steps parameter may not be greater than the size of the array plus the
+ * given start index.
+ */
+inline void darr_shift_slice_left(
+	struct darr *d,
+	size_t steps,
+	size_t start,
+	size_t size)
+{
+	size_t data_offset = darr_data_index(d, steps);
+	size_t data_start = darr_data_index(d, start);
+	size_t data_size = darr_data_index(d, size) - data_offset;
+
+	memmove(
+		d->data + data_start,
+		d->data + data_start + data_offset,
+		data_size);
+}
+
+/*
  * Moves a specified number of elements to the right, discarding the ones that
  * would have been moved out of bounds.
  *
@@ -263,6 +293,36 @@ inline void darr_shift_right(struct darr *d, size_t steps)
 	size_t size = darr_data_size(d);
 
 	memmove(d->data + offset, d->data, size - offset);
+}
+
+/*
+ * Moves a range of elements to the right, discarding the ones that would have
+ * been moved out of the boundaries of the slice.
+ *
+ * The start parameter must be an index into the array that denotes where the
+ * slice starts.
+ *
+ * The size parameter must be a positive number that does not exceed the size
+ * of the array counting from the given index that denotes the size of the
+ * slice.
+ *
+ * The steps parameter may not be greater than the size of the array plus the
+ * given start index.
+ */
+inline void darr_shift_slice_right(
+	struct darr *d,
+	size_t steps,
+	size_t start,
+	size_t size)
+{
+	size_t data_offset = darr_data_index(d, steps);
+	size_t data_start = darr_data_index(d, start);
+	size_t data_size = darr_data_index(d, size) - data_offset;
+
+	memmove(
+		d->data + data_start + data_offset,
+		d->data + data_start,
+		data_size);
 }
 
 /*
