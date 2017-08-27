@@ -63,3 +63,5 @@ void *darr_last(struct darr *d);
 int darr_append(struct darr *d, struct darr *other);
 
 int darr_prepend(struct darr *d, struct darr *other);
+
+int darr_insert(struct darr *d, size_t i, struct darr *other);

@@ -104,3 +104,8 @@ TESTS += tests/prepend
 check_PROGRAMS += tests/prepend
 tests_prepend_SOURCES = src/tests/prepend.c
 tests_prepend_LDADD = libdarr.a
+
+TESTS += tests/insert
+check_PROGRAMS += tests/insert
+tests_insert_SOURCES = src/tests/insert.c
+tests_insert_LDADD = libdarr.a

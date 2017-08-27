@@ -436,4 +436,30 @@ inline int darr_prepend(struct darr *d, struct darr *other)
 	return 1;
 }
 
+/*
+ * Copies the elements of another array to the given index in the array.
+ *
+ * Both arrays must have elements of the same size otherwise behavior is
+ * undefined.
+ *
+ * Returns 1 on success, 0 on failure.
+ *
+ * On failure the size and the contents of the array remain untouched.
+ */
+inline int darr_insert(struct darr *d, size_t i, struct darr *other)
+{
+	if (!darr_grow(d, darr_size(other))) {
+		return 0;
+	}
+
+	darr_shift_slice_right(d, darr_size(other), i, darr_size(d) - i);
+
+	memcpy(
+		d->data + darr_data_index(d, i),
+		other->data,
+		darr_data_size(other));
+
+	return 1;
+}
+
 #endif /* DARR_DARR_H */
