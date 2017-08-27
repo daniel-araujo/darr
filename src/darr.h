@@ -96,6 +96,35 @@ inline int darr_copy(struct darr *d, struct darr *other)
 }
 
 /*
+ * Initializes a darr struct that will be a copy of a slice of another one.
+ *
+ * Returns 1 on success, 0 on failure.
+ *
+ * On failure, the darr struct is not initialized.
+ *
+ * Call darr_deinit to deinitialize.
+ */
+inline int darr_slice(struct darr *d, struct darr *other, size_t i, size_t s)
+{
+	void *new = darr_realloc(NULL, darr_data_size(other));
+
+	if (new == NULL) {
+		return 0;
+	}
+
+	d->data = new;
+	d->element_size = other->element_size;
+	d->size = darr_data_index(other, s);
+
+	memcpy(
+		d->data,
+		other->data + darr_data_index(other, i),
+		d->size);
+
+	return 1;
+}
+
+/*
  * Deinitializes a darr struct.
  *
  * The struct must have been previously initialized with either darr_init or

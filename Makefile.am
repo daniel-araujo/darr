@@ -109,3 +109,8 @@ TESTS += tests/insert
 check_PROGRAMS += tests/insert
 tests_insert_SOURCES = src/tests/insert.c
 tests_insert_LDADD = libdarr.a
+
+TESTS += tests/slice
+check_PROGRAMS += tests/slice
+tests_slice_SOURCES = src/tests/slice.c
+tests_slice_LDADD = libdarr.a
