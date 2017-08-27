@@ -491,4 +491,23 @@ inline int darr_insert(struct darr *d, size_t i, struct darr *other)
 	return 1;
 }
 
+/*
+ * Removes a slice of elements from the array.
+ *
+ * Returns 1 on success, 0 on failure.
+ */
+inline int darr_remove(struct darr *d, size_t start, size_t size)
+{
+	darr_shift_slice_left(d, size, start, darr_size(d) - start);
+
+	if (!darr_shrink(d, size)) {
+		// TODO: With the current implementation, I am assuming that
+		// this situation will never happpen. Though I may be wrong. In
+		// that case, the shifting on the array needs to be reverted.
+		return 0;
+	}
+
+	return 1;
+}
+
 #endif /* DARR_DARR_H */

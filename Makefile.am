@@ -114,3 +114,8 @@ TESTS += tests/slice
 check_PROGRAMS += tests/slice
 tests_slice_SOURCES = src/tests/slice.c
 tests_slice_LDADD = libdarr.a
+
+TESTS += tests/remove
+check_PROGRAMS += tests/remove
+tests_remove_SOURCES = src/tests/remove.c
+tests_remove_LDADD = libdarr.a
