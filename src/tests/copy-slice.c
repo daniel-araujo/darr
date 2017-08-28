@@ -16,7 +16,7 @@ int main(void)
 	element[3] = 3;
 
 	struct darr array2;
-	darr_slice(&array2, &array, 1, 2);
+	darr_copy_slice(&array2, &array, 1, 2);
 
 	if (darr_size(&array2) != 2) {
 		fprintf(stderr, "Wrong size for slice.\n");

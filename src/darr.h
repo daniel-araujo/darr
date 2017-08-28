@@ -104,7 +104,11 @@ inline int darr_copy(struct darr *d, struct darr *other)
  *
  * Call darr_deinit to deinitialize.
  */
-inline int darr_slice(struct darr *d, struct darr *other, size_t i, size_t s)
+inline int darr_copy_slice(
+	struct darr *d,
+	struct darr *other,
+	size_t i,
+	size_t s)
 {
 	void *new = darr_realloc(NULL, darr_data_size(other));
 
@@ -511,8 +515,10 @@ inline int darr_remove(struct darr *d, size_t start, size_t size)
 }
 
 /*
- * Initializes a darr struct that contains elements extracted from another
+ * Initializes a darr struct that will hold a slice of elements from another
  * array.
+ *
+ * The elements will be removed from the other array.
  *
  * Returns 1 on success, 0 on failure.
  *
@@ -521,9 +527,9 @@ inline int darr_remove(struct darr *d, size_t start, size_t size)
  *
  * Call darr_deinit to deinitialize.
  */
-inline int darr_extract(struct darr *d, struct darr *other, size_t i, size_t s)
+inline int darr_move_slice(struct darr *d, struct darr *other, size_t i, size_t s)
 {
-	if (!darr_slice(d, other, i, s)) {
+	if (!darr_copy_slice(d, other, i, s)) {
 		return 0;
 	}
 
@@ -533,6 +539,23 @@ inline int darr_extract(struct darr *d, struct darr *other, size_t i, size_t s)
 	}
 
 	return 1;
+}
+
+/*
+ * Initializes a darr struct that will contain all elements of another array.
+ *
+ * The elements will be removed from the other array.
+ *
+ * Returns 1 on success, 0 on failure.
+ *
+ * On failure, the darr struct is not initialized and the other array is left
+ * untouched.
+ *
+ * Call darr_deinit to deinitialize.
+ */
+inline int darr_move(struct darr *d, struct darr *other)
+{
+	return darr_move_slice(d, other, 0, darr_size(other));
 }
 
 #endif /* DARR_DARR_H */

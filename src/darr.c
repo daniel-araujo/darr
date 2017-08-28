@@ -16,7 +16,7 @@ void darr_init(struct darr *d, size_t element_size);
 
 int darr_copy(struct darr *d, struct darr *other);
 
-int darr_slice(struct darr *d, struct darr *other, size_t i, size_t s);
+int darr_copy_slice(struct darr *d, struct darr *other, size_t i, size_t s);
 
 void darr_deinit(struct darr *d);
 
@@ -70,4 +70,6 @@ int darr_insert(struct darr *d, size_t i, struct darr *other);
 
 int darr_remove(struct darr *d, size_t start, size_t size);
 
-int darr_extract(struct darr *d, struct darr *other, size_t i, size_t s);
+int darr_move_slice(struct darr *d, struct darr *other, size_t i, size_t s);
+
+int darr_move(struct darr *d, struct darr *other);

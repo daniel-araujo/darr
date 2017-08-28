@@ -110,17 +110,22 @@ check_PROGRAMS += tests/insert
 tests_insert_SOURCES = src/tests/insert.c
 tests_insert_LDADD = libdarr.a
 
-TESTS += tests/slice
-check_PROGRAMS += tests/slice
-tests_slice_SOURCES = src/tests/slice.c
-tests_slice_LDADD = libdarr.a
+TESTS += tests/copy-slice
+check_PROGRAMS += tests/copy-slice
+tests_copy_slice_SOURCES = src/tests/copy-slice.c
+tests_copy_slice_LDADD = libdarr.a
 
 TESTS += tests/remove
 check_PROGRAMS += tests/remove
 tests_remove_SOURCES = src/tests/remove.c
 tests_remove_LDADD = libdarr.a
 
-TESTS += tests/extract
-check_PROGRAMS += tests/extract
-tests_extract_SOURCES = src/tests/extract.c
-tests_extract_LDADD = libdarr.a
+TESTS += tests/move
+check_PROGRAMS += tests/move
+tests_move_SOURCES = src/tests/move.c
+tests_move_LDADD = libdarr.a
+
+TESTS += tests/move-slice
+check_PROGRAMS += tests/move-slice
+tests_move_slice_SOURCES = src/tests/move-slice.c
+tests_move_slice_LDADD = libdarr.a
