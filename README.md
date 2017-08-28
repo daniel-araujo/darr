@@ -8,26 +8,26 @@ A resizable array for the C language.
 1. Introduction
 2. Examples
 3. How to use
-4. Reporting Bugs
+4. Reporting bugs
 5. License
 
 
 ## 1. Introduction
 
-Darr is a C library that abstracts most of the arithmetic that is done when
-attempting to create an array of variable size with malloc, realloc and free.
-The motivation for creating this tiny library is to stop having to repeatedly
-write such code.
+Darr is a C library that abstracts most of the arithmetic that is needed to be
+done when attempting to create an array of variable size with malloc, realloc
+and free. The motivation for creating this library is to stop having to
+repeatedly write such code and instead use a collection of functions.
 
 The functions in this library assume that they're going to be used correctly.
-There's no bounds checking, for example. this is in the same spirit that the
-language is designed with that makes it so efficient. The programmer is
-trusted.
+This is in the same spirit that the C language was designed with which makes it
+so efficient.
 
 
 ## 2. Examples
 
-The following C program shows you some of the most common operations.
+Here's a simple use case. This declares an array variable, initializes it,
+resizes it, stores a value in it, prints the value and disposes it.
 
 ```C
 #include <stdio.h>
@@ -60,6 +60,7 @@ int main(void)
 	// Store a value.
 	*element = 1;
 
+	// Access the value and print it.
 	printf("The first element holds the value %d.\n", *element);
 
 	// Dispose the array.
@@ -69,7 +70,8 @@ int main(void)
 }
 ```
 
-This shows you how you can iterate over the elements.
+This shows you how you can iterate over the elements of the array with either a
+C style indexing `for` loop or using C++ like iterators with pointers.
 
 ```C
 #include <stdio.h>
@@ -136,7 +138,7 @@ darr_init(&my_dynamic_array, sizeof(int));
 ```
 
 This initializes an empty array that that can hold an `int`.
-To set the size you need to call `darr_resize`. It takes the address of the
+To set the size you need to call `darr_resize`. It takes a pointer to the
 struct as its first argument and the number of elements as its second argument.
 It will return 0 on failure, 1 on success.
 
@@ -145,8 +147,8 @@ int result = darr_resize(&my_dynamic_array, new_size);
 ```
 
 You have probably noticed a pattern by now. Functions that operate on the
-struct always accept its address as their first argument. I will stop pointing
-that out from now on.
+struct always take a pointer to it as their first argument. I will stop
+pointing that out from now on.
 
 You can call `darr_element` to get a pointer to an element by index.
 
@@ -172,8 +174,9 @@ the array syntax to access the other elements.
 element[1] = 1;
 ```
 
-But be wary that the pointer must no longer be used after calling
-`darr_resize`. You would need to call `darr_element` to get a new pointer.
+But be wary that the pointer must no longer be used after calling `darr_resize`
+or any operation that changes the size of the array. You would need to call
+`darr_element` to get a new pointer.
 
 When you are done using the array you should call `darr_deinit` to release all
 the resources that are bound to it.
