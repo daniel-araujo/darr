@@ -114,12 +114,12 @@ inline int darr_slice(struct darr *d, struct darr *other, size_t i, size_t s)
 
 	d->data = new;
 	d->element_size = other->element_size;
-	d->size = darr_data_index(other, s);
+	d->size = s;
 
 	memcpy(
 		d->data,
 		other->data + darr_data_index(other, i),
-		d->size);
+		darr_data_index(d, d->size));
 
 	return 1;
 }

@@ -18,6 +18,13 @@ int main(void)
 	struct darr array2;
 	darr_slice(&array2, &array, 1, 2);
 
+	if (darr_size(&array2) != 2) {
+		fprintf(stderr, "Wrong size for slice.\n");
+		darr_deinit(&array);
+		darr_deinit(&array2);
+		return 1;
+	}
+
 	int *element2 = darr_element(&array2, 0);
 
 	if (element2[0] != 1) {
