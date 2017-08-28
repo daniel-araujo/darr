@@ -69,3 +69,5 @@ int darr_prepend(struct darr *d, struct darr *other);
 int darr_insert(struct darr *d, size_t i, struct darr *other);
 
 int darr_remove(struct darr *d, size_t start, size_t size);
+
+int darr_extract(struct darr *d, struct darr *other, size_t i, size_t s);

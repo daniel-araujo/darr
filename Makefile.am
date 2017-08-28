@@ -119,3 +119,8 @@ TESTS += tests/remove
 check_PROGRAMS += tests/remove
 tests_remove_SOURCES = src/tests/remove.c
 tests_remove_LDADD = libdarr.a
+
+TESTS += tests/extract
+check_PROGRAMS += tests/extract
+tests_extract_SOURCES = src/tests/extract.c
+tests_extract_LDADD = libdarr.a

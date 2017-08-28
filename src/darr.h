@@ -510,4 +510,29 @@ inline int darr_remove(struct darr *d, size_t start, size_t size)
 	return 1;
 }
 
+/*
+ * Initializes a darr struct that contains elements extracted from another
+ * array.
+ *
+ * Returns 1 on success, 0 on failure.
+ *
+ * On failure, the darr struct is not initialized and the other array is left
+ * untouched.
+ *
+ * Call darr_deinit to deinitialize.
+ */
+inline int darr_extract(struct darr *d, struct darr *other, size_t i, size_t s)
+{
+	if (!darr_slice(d, other, i, s)) {
+		return 0;
+	}
+
+	if (!darr_remove(other, i, s)) {
+		darr_deinit(d);
+		return 0;
+	}
+
+	return 1;
+}
+
 #endif /* DARR_DARR_H */
