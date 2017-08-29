@@ -18,6 +18,12 @@ AX_CHECK_COMPILE_FLAG([-std=c11],
 # Error messages: the more the better.
 AX_APPEND_FLAG([-Wall -Wextra])
 
+# Turn certain warning messages into error messages.
+AX_APPEND_FLAG([-Werror=incompatible-pointer-types])
+
+# Suppress less desirable warning messages.
+AX_APPEND_FLAG([-Wno-unused-variable])
+
 # Allowing C files to rely on being able to include files relative to the src
 # directory.
 AX_APPEND_FLAG([-iquote $srcdir/src -iquote src])

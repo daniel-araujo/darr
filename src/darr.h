@@ -41,7 +41,7 @@ struct darr {
  * Translates an index provided by the user to an index that can be used to
  * access an element.
  */
-inline size_t darr_data_index(struct darr *d, size_t i)
+inline size_t darr_data_index(const struct darr *d, size_t i)
 {
 	return i * d->element_size;
 }
@@ -51,7 +51,7 @@ inline size_t darr_data_index(struct darr *d, size_t i)
  *
  * Returns the total size of allocated memory.
  */
-inline size_t darr_data_size(struct darr *d)
+inline size_t darr_data_size(const struct darr *d)
 {
 	return d->size * d->element_size;
 }
@@ -79,7 +79,7 @@ inline void darr_init(struct darr *d, size_t element_size)
  *
  * Call darr_deinit to deinitialize.
  */
-inline int darr_copy(struct darr *d, struct darr *other)
+inline int darr_copy(struct darr *d, const struct darr *other)
 {
 	void *new = darr_realloc(NULL, darr_data_size(other));
 
@@ -106,7 +106,7 @@ inline int darr_copy(struct darr *d, struct darr *other)
  */
 inline int darr_copy_slice(
 	struct darr *d,
-	struct darr *other,
+	const struct darr *other,
 	size_t i,
 	size_t s)
 {
@@ -144,7 +144,7 @@ inline void darr_deinit(struct darr *d)
 /*
  * Returns the current size of the array.
  */
-inline size_t darr_size(struct darr *d)
+inline size_t darr_size(const struct darr *d)
 {
 	return d->size;
 }
@@ -159,6 +159,14 @@ inline size_t darr_size(struct darr *d)
 inline void *darr_data(struct darr *d)
 {
 	return d->data;
+}
+
+/*
+ * Like darr_data, but returns a const pointer.
+ */
+inline const void *darr_data_const(const struct darr *d)
+{
+	return darr_data((struct darr *) d);
 }
 
 /*
@@ -217,6 +225,14 @@ inline void *darr_element(struct darr *d, size_t i)
 }
 
 /*
+ * Like darr_element, but returns a const pointer.
+ */
+inline const void *darr_element_const(const struct darr *d, size_t i)
+{
+	return darr_element((struct darr *) d, i);
+}
+
+/*
  * Returns a pointer to the start of the array, which is also a pointer to the
  * first element.
  *
@@ -232,6 +248,14 @@ inline void *darr_begin(struct darr *d)
 }
 
 /*
+ * Like darr_begin, but returns a const pointer.
+ */
+inline const void *darr_begin_const(const struct darr *d)
+{
+	return darr_begin((struct darr *) d);
+}
+
+/*
  * Returns a pointer past the end of the array.
  *
  * If the array is empty, the function returns the same as darr_begin.
@@ -243,6 +267,14 @@ inline void *darr_begin(struct darr *d)
 inline void *darr_end(struct darr *d)
 {
 	return darr_element(d, darr_size(d));
+}
+
+/*
+ * Like darr_end, but returns a const pointer.
+ */
+inline const void *darr_end_const(const struct darr *d)
+{
+	return darr_end((struct darr *) d);
 }
 
 /*
@@ -263,7 +295,7 @@ inline void darr_swap(struct darr *d, struct darr *other)
 /*
  * Returns 1 if the array is empty otherwise it returns 0.
  */
-inline int darr_empty(struct darr *d)
+inline int darr_empty(const struct darr *d)
 {
 	return d->size == 0;
 }
@@ -412,6 +444,14 @@ inline void *darr_first(struct darr *d)
 }
 
 /*
+ * Like darr_first, but returns a const pointer.
+ */
+inline const void *darr_first_const(const struct darr *d)
+{
+	return darr_first((struct darr *) d);
+}
+
+/*
  * Returns a pointer to the last element of the array.
  *
  * The behavior of this function is undefined if the array is empty.
@@ -424,6 +464,14 @@ inline void *darr_last(struct darr *d)
 }
 
 /*
+ * Like darr_last, but returns a const pointer.
+ */
+inline const void *darr_last_const(const struct darr *d)
+{
+	return darr_last((struct darr *) d);
+}
+
+/*
  * Copies the elements of another array to the end of the array.
  *
  * Both arrays must have elements of the same size otherwise behavior is
@@ -433,7 +481,7 @@ inline void *darr_last(struct darr *d)
  *
  * On failure the size and the contents of the array remain untouched.
  */
-inline int darr_append(struct darr *d, struct darr *other)
+inline int darr_append(struct darr *d, const struct darr *other)
 {
 	size_t offset = darr_size(d);
 
@@ -456,7 +504,7 @@ inline int darr_append(struct darr *d, struct darr *other)
  *
  * On failure the size and the contents of the array remain untouched.
  */
-inline int darr_prepend(struct darr *d, struct darr *other)
+inline int darr_prepend(struct darr *d, const struct darr *other)
 {
 	if (!darr_grow(d, darr_size(other))) {
 		return 0;
@@ -479,7 +527,7 @@ inline int darr_prepend(struct darr *d, struct darr *other)
  *
  * On failure the size and the contents of the array remain untouched.
  */
-inline int darr_insert(struct darr *d, size_t i, struct darr *other)
+inline int darr_insert(struct darr *d, size_t i, const struct darr *other)
 {
 	if (!darr_grow(d, darr_size(other))) {
 		return 0;

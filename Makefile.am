@@ -129,3 +129,8 @@ TESTS += tests/move-slice
 check_PROGRAMS += tests/move-slice
 tests_move_slice_SOURCES = src/tests/move-slice.c
 tests_move_slice_LDADD = libdarr.a
+
+TESTS += tests/const
+check_PROGRAMS += tests/const
+tests_const_SOURCES = src/tests/const.c
+tests_const_LDADD = libdarr.a
