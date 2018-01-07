@@ -11,6 +11,7 @@ AC_PROG_RANLIB
 
 AC_TYPE_SIZE_T
 
+# Use C11.
 AX_CHECK_COMPILE_FLAG([-std=c11],
 	[AX_APPEND_FLAG([-std=c11])],
 	[AC_MSG_ERROR([-std=c11 not supported.])])
@@ -19,7 +20,8 @@ AX_CHECK_COMPILE_FLAG([-std=c11],
 AX_APPEND_FLAG([-Wall -Wextra])
 
 # Turn certain warning messages into error messages.
-AX_APPEND_FLAG([-Werror=incompatible-pointer-types])
+AX_CHECK_COMPILE_FLAG([-Werror=incompatible-pointer-types],
+	[AX_APPEND_FLAG([-Werror=incompatible-pointer-types])])
 
 # Suppress less desirable warning messages.
 AX_APPEND_FLAG([-Wno-unused-variable])
