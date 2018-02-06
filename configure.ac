@@ -1,5 +1,5 @@
 AC_PREREQ([2.69])
-AC_INIT([darr], [1.7.2], [https://github.com/daniel-araujo/darr/issues])
+AC_INIT([darr], [1.7.3], [https://github.com/daniel-araujo/darr/issues])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([foreign subdir-objects])
 
