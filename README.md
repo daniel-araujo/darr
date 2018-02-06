@@ -106,6 +106,559 @@ int main(void)
 }
 ```
 
+Copies another array.
+
+```C
+#include <stdio.h>
+#include <darr.h>
+
+int main(void)
+{
+	struct darr array;
+	darr_init(&array, sizeof(int));
+
+	if (!darr_resize(&array, 3)) {
+		fprintf(stderr, "Failed to resize the array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	for (int i = 0; i < darr_size(&array); ++i) {
+		int *e = darr_element(&array, i);
+
+		*e = i + 1;
+	}
+
+	struct darr array_copy;
+	if (!darr_copy(&array_copy, &array)) {
+		fprintf(stderr, "Failed to copy array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	// Original array is no longer needed
+	darr_deinit(&array);
+
+	for (int *e = darr_begin(&array_copy); e != darr_end(&array_copy); ++e) {
+		printf("Copied %d\n", *e);
+	}
+
+	darr_deinit(&array_copy);
+
+	return 0;
+}
+```
+
+Copies a slice from another array.
+
+```C
+#include <stdio.h>
+#include <darr.h>
+
+int main(void)
+{
+	struct darr array;
+	darr_init(&array, sizeof(int));
+
+	if (!darr_resize(&array, 3)) {
+		fprintf(stderr, "Failed to resize the array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	for (int i = 0; i < darr_size(&array); ++i) {
+		int *e = darr_element(&array, i);
+
+		*e = i + 1;
+	}
+
+	struct darr array_copy;
+	if (!darr_copy_slice(&array_copy, &array, 1, 2)) {
+		fprintf(stderr, "Failed to copy array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	// Original array is no longer needed
+	darr_deinit(&array);
+
+	for (int *e = darr_begin(&array_copy); e != darr_end(&array_copy); ++e) {
+		printf("Copied %d\n", *e);
+	}
+
+	darr_deinit(&array_copy);
+
+	return 0;
+}
+```
+
+Swaps elements from one array to another.
+
+```C
+#include <stdio.h>
+#include <darr.h>
+
+int main(void)
+{
+	struct darr array;
+	darr_init(&array, sizeof(int));
+
+	if (!darr_resize(&array, 3)) {
+		fprintf(stderr, "Failed to resize the array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	struct darr other_array;
+	darr_init(&other_array, sizeof(int));
+
+	if (!darr_resize(&other_array, 3)) {
+		fprintf(stderr, "Failed to resize the other array.\n");
+		darr_deinit(&array);
+		darr_deinit(&other_array);
+		return 1;
+	}
+
+	for (int i = 0; i < 3; ++i) {
+		int *e1 = darr_element(&array, i);
+		int *e2 = darr_element(&other_array, i);
+
+		*e1 = i + 1;
+		*e2 = -*e1;
+	}
+
+	darr_swap(&array, &other_array);
+
+	for (int i = 0; i < 3; ++i) {
+		int *e1 = darr_element(&array, i);
+		int *e2 = darr_element(&other_array, i);
+
+		printf("array[%d] = %d\n", i, *e1);
+		printf("other_array[%d] = %d\n", i, *e2);
+	}
+
+	darr_deinit(&array);
+	darr_deinit(&other_copy);
+
+	return 0;
+}
+```
+
+Shifts elements left and right.
+
+```C
+#include <stdio.h>
+#include <darr.h>
+
+int main(void)
+{
+	struct darr array;
+	darr_init(&array, sizeof(int));
+
+	if (!darr_resize(&array, 2)) {
+		fprintf(stderr, "Failed to resize the array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	int *first = darr_element(&array, 0);
+	int *second = darr_element(&array, 1);
+
+	*second = 100;
+
+	// Shift all elements 1 position to the left.
+	darr_shift_left(&array, 1);
+
+	printf("First after left shift: %d\n", *first);
+
+	// Shift all elements 1 position to the right.
+	darr_shift_right(&array, 1);
+
+	printf("Second after right shift: %d\n", *second);
+
+	darr_deinit(&array);
+
+	return 0;
+}
+```
+
+Shifts elements left and right inside slices.
+
+```C
+#include <stdio.h>
+#include <darr.h>
+
+int main(void)
+{
+	struct darr array;
+	darr_init(&array, sizeof(int));
+
+	if (!darr_resize(&array, 4)) {
+		fprintf(stderr, "Failed to resize the array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	int *first = darr_element(&array, 0);
+	int *second = darr_element(&array, 1);
+	int *third = darr_element(&array, 2);
+	int *fourth = darr_element(&array, 3);
+
+	*first = 100;
+	*third = 200;
+
+	// Shift to the left.
+	darr_shift_slice_left(&array, 1, 1, 2);
+
+	printf("First after left shift: %d\n", *first);
+	printf("Second after left shift: %d\n", *second);
+
+	// Shift to the right.
+	darr_shift_slice_right(&array, 1, 1, 2);
+
+	printf("First after right shift: %d\n", *first);
+	printf("Third after right shift: %d\n", *third);
+
+	darr_deinit(&array);
+
+	return 0;
+}
+```
+
+Shrinks and grows array size.
+
+```C
+#include <stdio.h>
+#include <darr.h>
+
+int main(void)
+{
+	struct darr array;
+	darr_init(&array, sizeof(int));
+
+	if (!darr_resize(&array, 3)) {
+		fprintf(stderr, "Failed to resize the array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	printf("Initial size: %d\n", (int) darr_size(&array));
+
+	if (!darr_grow(&array, 1)) {
+		fprintf(stderr, "Failed to grow the size of the array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	printf("Size after growing by 1: %d\n", (int) darr_size(&array));
+
+	if (!darr_shrink(&array, 1)) {
+		fprintf(stderr, "Failed to shrink the size of the array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	printf("Size after shrinking by 1: %d\n", (int) darr_size(&array));
+
+	darr_deinit(&array);
+
+	return 0;
+}
+```
+
+Access first and last element.
+
+```C
+#include <stdio.h>
+#include <darr.h>
+
+int main(void)
+{
+	struct darr array;
+	darr_init(&array, sizeof(int));
+
+	if (!darr_resize(&array, 3)) {
+		fprintf(stderr, "Failed to resize the array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	for (int i = 0; i < darr_size(&array); ++i) {
+		int *e = darr_element(&array, i);
+
+		*e = i + 1;
+	}
+
+	int *first = darr_first(&array);
+	int *last = darr_last(&array);
+
+	printf("First element: %d\n", *first);
+	printf("Last element: %d\n", *last);
+
+	darr_deinit(&array);
+
+	return 0;
+}
+```
+
+Inserts, appends and prepends elements from another array.
+
+```C
+#include <stdio.h>
+#include <darr.h>
+
+int main(void)
+{
+	struct darr array;
+	darr_init(&array, sizeof(int));
+
+	if (!darr_resize(&array, 2)) {
+		fprintf(stderr, "Failed to resize the array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	printf("Original size: %d\n", (int) darr_size(&array));
+
+	for (int *e = darr_begin(&array); e != darr_end(&array); ++e) {
+		*e = 0;
+	}
+
+	struct darr other_array;
+	darr_init(&other_array, sizeof(int));
+
+	if (!darr_resize(&other_array, 2)) {
+		fprintf(stderr, "Failed to resize the other array.\n");
+		darr_deinit(&array);
+		darr_deinit(&other_array);
+		return 1;
+	}
+
+	for (int *e = darr_begin(&other_array); e != darr_end(&other_array); ++e) {
+		*e = 1;
+	}
+
+	if (!darr_insert(&array, 1, &other_array)) {
+		fprintf(stderr, "Failed to insert elements in the middle.\n");
+		darr_deinit(&array);
+		darr_deinit(&other_array);
+		return 1;
+	}
+
+	if (!darr_append(&array, &other_array)) {
+		fprintf(stderr, "Failed to append.\n");
+		darr_deinit(&array);
+		darr_deinit(&other_array);
+		return 1;
+	}
+
+	if (!darr_prepend(&array, &other_array)) {
+		fprintf(stderr, "Failed to prepend.\n");
+		darr_deinit(&array);
+		darr_deinit(&other_array);
+		return 1;
+	}
+
+	printf("New size: %d\n", (int) darr_size(&array));
+
+	for (int i = 0; i < darr_size(&array); ++i) {
+		int *e = darr_element(&array, i);
+
+		printf("Element %d: %d\n", i, *e);
+	}
+
+	darr_deinit(&array);
+	darr_deinit(&other_array);
+
+	return 0;
+}
+```
+
+Removes elements from an array.
+
+```C
+#include <stdio.h>
+#include <darr.h>
+
+int main(void)
+{
+	struct darr array;
+	darr_init(&array, sizeof(int));
+
+	if (!darr_resize(&array, 3)) {
+		fprintf(stderr, "Failed to resize the array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	for (int i = 0; i < darr_size(&array); ++i) {
+		int *e = darr_element(&array, i);
+
+		*e = i + 1;
+	}
+
+	printf("Original size: %d\n", (int) darr_size(&array));
+
+	darr_remove(&array, 0, 1);
+
+	printf("Size after removal: %d\n", (int) darr_size(&array));
+
+	for (int i = 0; i < darr_size(&array); ++i) {
+		int *e = darr_element(&array, i);
+
+		printf("Element %d: %d\n", i, *e);
+	}
+
+	darr_deinit(&array);
+
+	return 0;
+}
+```
+
+Moves all elements from one array to a new one.
+
+```C
+#include <stdio.h>
+#include <darr.h>
+
+int main(void)
+{
+	struct darr array;
+	darr_init(&array, sizeof(int));
+
+	if (!darr_resize(&array, 3)) {
+		fprintf(stderr, "Failed to resize the array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	for (int i = 0; i < darr_size(&array); ++i) {
+		int *e = darr_element(&array, i);
+
+		*e = i + 1;
+	}
+
+	struct darr other_array;
+	if (!darr_move(&other_array, &array)) {
+		fprintf(stderr, "Failed to move elements.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	for (int i = 0; i < darr_size(&other_array); ++i) {
+		int *e = darr_element(&other_array, i);
+
+		printf("Moved element %d: %d\n", i, *e);
+	}
+
+	darr_deinit(&array);
+	darr_deinit(&other_array);
+
+	return 0;
+}
+```
+
+Moves a slice of elements from one array to a new one.
+
+```C
+#include <stdio.h>
+#include <darr.h>
+
+int main(void)
+{
+	struct darr array;
+	darr_init(&array, sizeof(int));
+
+	if (!darr_resize(&array, 3)) {
+		fprintf(stderr, "Failed to resize the array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	for (int i = 0; i < darr_size(&array); ++i) {
+		int *e = darr_element(&array, i);
+
+		*e = i + 1;
+	}
+
+	printf("Original size: %d\n", (int) darr_size(&array));
+
+	struct darr other_array;
+	if (!darr_move_slice(&other_array, &array, 1, 2)) {
+		fprintf(stderr, "Failed to move elements.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	printf("New size: %d\n", (int) darr_size(&array));
+
+	for (int i = 0; i < darr_size(&array); ++i) {
+		int *e = darr_element(&array, i);
+
+		printf("Old array element %d: %d\n", i, *e);
+	}
+
+	for (int i = 0; i < darr_size(&other_array); ++i) {
+		int *e = darr_element(&other_array, i);
+
+		printf("New array element %d: %d\n", i, *e);
+	}
+
+	darr_deinit(&array);
+	darr_deinit(&other_array);
+
+	return 0;
+}
+```
+
+Supports const semantics.
+
+```C
+#include <stdio.h>
+#include <darr.h>
+
+// Accepts const pointers.
+void print_int_array_representation(const struct darr *array)
+{
+	// darr_size works on const pointers.
+	int size = darr_size(array);
+
+	printf("array[%d] = ", size);
+	printf("{\n");
+	for (int i = 0; i < size; ++i) {
+		// Using const counterpart of darr_element.
+		const int *e = darr_element_const(array, i);
+
+		printf("\t[%d] = %d,\n", i, *e);
+	}
+	printf("};\n");
+}
+
+int main(void)
+{
+	struct darr array;
+	darr_init(&array, sizeof(int));
+
+	if (!darr_resize(&array, 3)) {
+		fprintf(stderr, "Failed to resize the array.\n");
+		darr_deinit(&array);
+		return 1;
+	}
+
+	for (int i = 0; i < darr_size(&array); ++i) {
+		int *e = darr_element(&array, i);
+
+		*e = i + 1;
+	}
+
+	print_int_array_representation(&array);
+
+	darr_deinit(&array);
+
+	return 0;
+}
+```
+
 
 ## 3. How to use
 
