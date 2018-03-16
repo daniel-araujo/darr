@@ -18,6 +18,7 @@ A resizable array for the C language.
     * Inserting
     * Removing
     * Const
+    * Sorting
 4. Reporting bugs
 5. License
 
@@ -323,6 +324,31 @@ const int *end = darr_end_const(&const_array);
 ```C
 const int *first = darr_first_const(&const_array);
 const int *last = darr_last_const(&const_array);
+```
+
+
+### 3.11. Sorting
+
+Darr provides the means for you to use existing sorting algorithms.
+
+Here's how you would use the standard library's `qsort`.
+
+```C
+int compare(const void *a, const void *b)
+{
+	const int *x = a;
+	const int *y = b;
+
+	if (*x > *y) {
+		return 1;
+	} else if (*x < *y) {
+		return -1;
+	} else {
+		return 0;
+	}
+}
+
+qsort(darr_data(&array), darr_size(&array), sizeof(int), compare);
 ```
 
 
