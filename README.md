@@ -1,4 +1,4 @@
-# Darr 1.7.4
+# Darr 1.7.5
 
 A resizable array for the C language.
 
