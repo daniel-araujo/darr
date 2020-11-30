@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "darr.h"
+#include "../src/darr.h"
 
 int main(void)
 {
