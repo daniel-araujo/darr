@@ -6,3 +6,6 @@ enable_testing()
 
 add_subdirectory(src)
 add_subdirectory(tests)
+
+install(TARGETS darr DESTINATION lib)
+install(FILES src/darr.h DESTINATION include)
