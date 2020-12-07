@@ -1,2 +1,5 @@
 # Directory meant for developer builds.
 /build
+
+# Test build.
+/tests/cmake-external-subdirectory/build

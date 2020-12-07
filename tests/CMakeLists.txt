@@ -29,3 +29,5 @@ test_single_c_file(shift-slice)
 test_single_c_file(shift)
 test_single_c_file(shrink-grow)
 test_single_c_file(swap)
+
+add_test(NAME cmake-external-subdirectory COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/cmake-external-subdirectory/run)

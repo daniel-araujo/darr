@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# So that the test fails if any command fails.
+set -e
+
+# Where this isolated CMake projected will be built.
+build_dir="$(dirname "$0")/build"
+
+# Making sure that we start with a clean slate.
+rm -rf "$build_dir"
+mkdir "$build_dir"
+
+cd "$build_dir"
+
+cmake ..
+
+make
+
+./main
