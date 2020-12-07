@@ -10,3 +10,6 @@ target_compile_options(darr PRIVATE -Werror=incompatible-pointer-types)
 
 # Suppress less desirable warning messages.
 target_compile_options(darr PRIVATE -Wno-unused-variable)
+
+# So that programs can include the header file.
+target_include_directories(darr INTERFACE .)
